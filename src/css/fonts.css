@@ -1,0 +1,17 @@
+@font-face {
+    font-family: ProductSansBoldItalic;
+    src: url(./fonts/ProductSansBoldItalic.ttf);
+}
+@font-face {
+    font-family:ProductSansBold;
+    src: url(./fonts/ProductSansBold.ttf);
+}
+@font-face {
+    font-family: ProductSansItalic;
+    src: url(./fonts/ProductSansItalic.ttf);
+}
+@font-face {
+    font-family: ProductSansRegular;
+    src: url(./fonts/ProductSansRegular.ttf);
+}
+
