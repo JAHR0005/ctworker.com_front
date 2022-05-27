@@ -3,16 +3,21 @@
     <h1 class="text-center my-5 title text-muted"><span class="text-success">Ct</span>Worker</h1>
     <b-col class="search-input mx-auto">
         <b-icon  icon="search" class="search-icon"></b-icon>
-        <b-form-input @keyup.enter="hola()"></b-form-input> 
+        <b-form-input @keyup.enter="makeSearch()" v-model="searchWords"></b-form-input> 
     </b-col>
   </div>
 </template>
 <script>
 export default {
     name: 'WelcomeComponent',
+    data(){
+        return {
+            searchWords: '',
+        }
+    },        
     methods:{
-        hola(){
-            alert('hola')
+        makeSearch(){
+            alert(this.searchWords)
         }
     }
 }
