@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1 class="text-center my-5 title text-muted"><span class="text-success">Ct</span>Worker</h1>
+  <div class="welcome-div">
+    <h1 class="text-center title text-muted"><span class="text-success">Ct</span>Worker</h1>
     <b-col class="search-input mx-auto">
         <b-icon  icon="search" class="search-icon"></b-icon>
         <b-form-input @keyup.enter="makeSearch()" v-model="searchWords"></b-form-input> 
@@ -23,6 +23,9 @@ export default {
 }
 </script>
 <style scoped>
+.welcome-div{
+    margin-top: 12%!important
+}
 .form-control{
     border-radius: 180px;  
     height: 48px;
@@ -46,5 +49,18 @@ export default {
     font-size: 20px;
     margin-top: 12px;
     color:grey
+}
+
+@media (min-width:0px) and (max-width: 575px) {
+    .search-input{
+        width: 95%!important;
+    }
+    .title{
+        font-size: 3rem;
+        font-weight: 800;
+    }
+    .welcome-div{
+        margin-top: 30%!important
+    } 
 }
 </style>

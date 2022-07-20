@@ -1,39 +1,34 @@
 <template>
     <div>
-        <b-card class="mt-3 mb-2 mr-3 mx-auto register-div">
-            <ValidationObserver ref="form" v-slot="{ handleSubmit }">
+        <b-card class="mx-auto login-div">
+            <ValidationObserver ref="loginForm" v-slot="{ handleSubmit }">
                 <b-form class="mb-3" @submit.prevent="handleSubmit(login)">
-                <h3 class="mb-3">Iniciar Sesión</h3>
+                <h2 class="mb-3">Iniciar Sesión</h2>
                 <div class="my-auto d-block">
-                    <ValidationProvider vid="email" name="email" rules="required">
+                    <ValidationProvider vid="username" name="username" rules="required">
                         <div class="input-field mt-3" slot-scope="{ valid, errors }">
-                            <label for="email">Correo electrónico</label>
-                            <b-form-input id="email" :state="errors[0] ? false : (valid ? true : null)" v-model="email" autocomplete="on"></b-form-input>
+                            <label for="username">Usuario</label>
+                            <b-form-input id="username" :state="errors[0] ? false : (valid ? true : null)" v-model="username" autocomplete="on"></b-form-input>
                             <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
                         </div>
                     </ValidationProvider>
                     <ValidationProvider vid="password" name="password" rules="required">
-                        <div class="input-field mt-3" slot-scope="{ valid, errors }">
+                        <div class="input-field my-3" slot-scope="{ valid, errors }">
                             <label for="password">Contraseña</label>
                             <b-form-input id="password" :state="errors[0] ? false : (valid ? true : null)" v-model="password" type="password" autocomplete="on"></b-form-input>
                             <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
                         </div>
                     </ValidationProvider>
                 </div>
-                <b-overlay :show="show" rounded="sm">
-                    <b-button type="submit" block class="mt-3 mx-auto d-block w-font" variant="success">Iniciar Sesión</b-button>
+                <b-overlay :show="show" rounded="sm" class="login-overlay mx-auto">
+                    <b-button type="submit" block class="my-5 mx-auto d-block" variant="success">Iniciar Sesión</b-button>
                 </b-overlay>
             </b-form>
             </ValidationObserver>
-            <p class="text-center mb-1">
+            <p class="text-center my-3">
                 <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted" unchecked-value="not_accepted" class="mx-auto d-block">Recuérdame</b-form-checkbox>
             </p>
         </b-card>
-        <div class="register-div mx-auto">
-            <p class="text-divider text-center mt-5 text-secondary">¿Aún no estás registrado en Syblins?</p>
-            <router-link :to="{ name: 'Register' }" class="mr-3 mt-2 text-d-none"><b-button block class="bc-light-grey text-dark block-button">Crea tu cuenta en Syblins</b-button></router-link>
-        </div>
-        <SessionFooter></SessionFooter>
     </div>
 </template>
 <script>
@@ -45,7 +40,7 @@ export default {
     data(){
         return{
             status: 'not_accepted',
-            email:'',
+            username:'',
             password:'',
             show: false
         }
@@ -53,40 +48,37 @@ export default {
     methods:{
         login(){
             this.show = true
-            if (this.password.length > 0){
-                let email = this.email
-                let password = this.password
-                let status = this.status
-                
-                this.axios.post('https://localhost/syblins.com/public/api/login', {email, password, status})
-                .then(response => {
-                    
-                    this.$store.dispatch('setAuthToken', response.data.token)
-                    this.$store.dispatch('setEmail', response.data.email)
-                    this.$store.dispatch('doLogin', response.data.username)
-                    this.$root.$emit('loggedIn', response.data.username)
-                    this.show = false
-                    this.$router.push({name: 'Welcome'})
-                }).catch((error) => {
-                    if(error.response.status === 500){
-                        this.$refs.form.setErrors({
-                            password: ['Contraseña incorrecta']
-                        })
-                    }
-                    if(error.response.status === 404){
-                        this.$refs.form.setErrors({
-                            email: ['Este email no existe']
-                        })
-                    }
-                    this.show = false
-                })
-            }
+            
+            var username = this.username
+            var password = this.password
+        
+            this.axios.post('employee_login', {username, password}).then(response => {
+                alert(response.data)
+                //this.$store.dispatch('doLogin', infoUser)
+                this.$router.push({name: 'WelcomeComponent'})
+            }).catch(error => {
+                console.log(error)
+        
+            })
+            
+            this.show = false        
         }
     }
 }
 </script>
-<style>
-    .block-button:hover{
-        color:white!important;
+<style scoped>
+    .login-div{
+        width: 350px;
+        height: 440px;
+        margin-top: 5%!important
+    }
+    .login-overlay{
+        width: 118px;
+        height:40px
+    }
+    @media (min-width:0px) and (max-width: 575px) {
+        .login-div{
+            margin-top: 15%!important;
+        }
     }
 </style>
