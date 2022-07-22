@@ -53,12 +53,20 @@ export default {
             var password = this.password
         
             this.axios.post('employee_login', {username, password}).then(response => {
-                alert(response.data)
-                //this.$store.dispatch('doLogin', infoUser)
+                this.$store.commit('DO_LOGIN',response.data)
+                this.$root.$emit('isLoggedIn',response.data.username)
                 this.$router.push({name: 'WelcomeComponent'})
             }).catch(error => {
-                console.log(error)
-        
+                if(error.response.status === 404){
+                    this.$refs.loginForm.setErrors({
+                        username: ['El usuario introducido no existe']
+                    })
+                }
+                if(error.response.status === 500){
+                    this.$refs.loginForm.setErrors({
+                        password: ['La contraseña introducida no es correcta']
+                    })
+                }
             })
             
             this.show = false        

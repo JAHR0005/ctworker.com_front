@@ -5,7 +5,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { ValidationObserver, ValidationProvider} from 'vee-validate'
-import Store from './store'
+import store from './store'
 import Routes from './routes'
 
 require('./headers')
@@ -26,7 +26,7 @@ const routes = new vueRouter({
 })
 
 new Vue({
-  Store,
+  store,
   render: h => h(App),
   router: routes,
 }).$mount('#app')

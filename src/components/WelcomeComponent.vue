@@ -14,10 +14,26 @@ export default {
         return {
             searchWords: '',
         }
-    },        
+    }, 
+    created(){
+        this.checkUser()
+    },       
     methods:{
         makeSearch(){
             alert(this.searchWords)
+        },
+        checkUser(){
+            if(localStorage.getItem('ctWorker.username') || localStorage.getItem('ctWorker.jwt') != null){
+                var username =this.$store.getters.username
+                this.axios.post('checkUser',{ username }).then(() => { 
+                   
+                    console.log('user verified') 
+                }).catch(error => {
+                    if(error.response.status){
+                       console.log('not verified')
+                    }
+                })
+            }
         }
     }
 }
