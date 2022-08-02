@@ -4,7 +4,7 @@
             <ValidationObserver ref="loginForm" v-slot="{ handleSubmit }">
                 <b-form class="mb-3" @submit.prevent="handleSubmit(login)">
                 <h2 class="mb-3">Iniciar Sesión</h2>
-                <div class="my-auto d-block">
+                <div class="my-auto d-block mt-5">
                     <ValidationProvider vid="username" name="username" rules="required">
                         <div class="input-field mt-3" slot-scope="{ valid, errors }">
                             <label for="username">Usuario</label>
@@ -25,9 +25,6 @@
                 </b-overlay>
             </b-form>
             </ValidationObserver>
-            <p class="text-center my-3">
-                <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted" unchecked-value="not_accepted" class="mx-auto d-block">Recuérdame</b-form-checkbox>
-            </p>
         </b-card>
     </div>
 </template>
@@ -48,21 +45,19 @@ export default {
     methods:{
         login(){
             this.show = true
-            
             var username = this.username
             var password = this.password
-        
-            this.axios.post('employee_login', {username, password}).then(response => {
+            this.axios.post('employees_login', {username, password}).then(response => {
                 this.$store.commit('DO_LOGIN',response.data)
                 this.$root.$emit('isLoggedIn',response.data.username)
-                this.$router.push({name: 'WelcomeComponent'})
+                this.$router.push({name: 'Welcome'})
             }).catch(error => {
                 if(error.response.status === 404){
                     this.$refs.loginForm.setErrors({
                         username: ['El usuario introducido no existe']
                     })
                 }
-                if(error.response.status === 500){
+                if(error.response.status === 401){
                     this.$refs.loginForm.setErrors({
                         password: ['La contraseña introducida no es correcta']
                     })

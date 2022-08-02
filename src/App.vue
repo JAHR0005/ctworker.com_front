@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <HeaderComponent v-if="$route.name !== 'Login'"/>
+    <router-view/>
   </div>
 </template>
 <script>
+import HeaderComponent from './components/HeaderComponent.vue'
 export default {
   name: 'App',
   components: {
-    
+    HeaderComponent,
   }
 }
 </script>
 <style>
-@import './css/style.css';
+  @import './css/style.css';
 </style>

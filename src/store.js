@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
@@ -24,19 +23,41 @@ export default new Vuex.Store({
     },
     mutations: {
         DO_LOGIN(state, userInfo) {
-            localStorage.setItem('ctWorker.username', JSON.stringify(userInfo.username))
+            localStorage.setItem('ctWorker.username', JSON.stringify(userInfo.user))
             localStorage.setItem('ctWorker.jwt', userInfo.token) 
             localStorage.setItem('state.Auth', true)
             state.auth = true
-            state.username = userInfo.username    
+            state.username = userInfo.user
             state.token = userInfo.token
-        }
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.token
+        },
+        DO_LOGOUT(state) {
+            localStorage.removeItem('ctWorker.username')
+            localStorage.removeItem('ctWorker.jwt')
+            localStorage.removeItem('state.Auth')
+            state.auth = false
+            state.username = null
+            state.token = null
+            axios.defaults.headers.common['Authorization'] = null
+        },  
     },
+
     actions: {
-        checkUserAuth({ commit },user){
+        do_logout({commit}) {
+            axios.post('employees_logout').then(() => { 
+                return console.log('user verified') 
+            }).catch(error => {
+                if(error.response.status){
+                    alert('La sesión ya ha expirado')
+                    return console.log('not verified')
+                }
+            })
+            commit('DO_LOGOUT') 
+
+        },
+        checkUserAuth({ commit }){
             if(localStorage.getItem('ctWorker.username') || localStorage.getItem('ctWorker.jwt') != null){
-                axios.post('user',{ user }).then(() => { 
-                    commit('CHECK_USER_AUTH')
+                axios.post('checkUser').then(() => { 
                     console.log('user verified') 
                 }).catch(error => {
                     if(error.response.status){

@@ -3,6 +3,14 @@
     font-family:'ProductSansRegular';
 }
 
+a{
+    text-decoration:none!important;
+}
+
+a:hover{
+    color: rgb(1, 65, 1)!important;
+}
+
 button:focus { 
     outline:0 !important;
     box-shadow: none!important;

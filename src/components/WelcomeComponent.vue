@@ -3,7 +3,12 @@
     <h1 class="text-center title text-muted"><span class="text-success">Ct</span>Worker</h1>
     <b-col class="search-input mx-auto">
         <b-icon  icon="search" class="search-icon"></b-icon>
-        <b-form-input @keyup.enter="makeSearch()" v-model="searchWords"></b-form-input> 
+        <VueSimpleSuggest v-model="searchWords" @keyup.enter="makeSearch()"
+    :list="simpleSuggestionList"
+    :filter-by-query="true">
+<!-- Filter by input text to only show the matching results -->
+  </VueSimpleSuggest>
+   <p>Chosen element: {{ searchWords }}</p>
     </b-col>
   </div>
 </template>
@@ -13,40 +18,44 @@ export default {
     data(){
         return {
             searchWords: '',
+            chosen: ''
         }
-    }, 
-    created(){
-        this.checkUser()
-    },       
+    },     
     methods:{
+        simpleSuggestionList() {
+        return [
+          'Vue.js',
+          'React.js',
+          'Angular.js'
+        ]
+      },
         makeSearch(){
             alert(this.searchWords)
         },
-        checkUser(){
-            if(localStorage.getItem('ctWorker.username') || localStorage.getItem('ctWorker.jwt') != null){
-                var username =this.$store.getters.username
-                this.axios.post('checkUser',{ username }).then(() => { 
-                   
-                    console.log('user verified') 
-                }).catch(error => {
-                    if(error.response.status){
-                       console.log('not verified')
-                    }
-                })
-            }
-        }
     }
 }
 </script>
-<style scoped>
+<style>
 .welcome-div{
     margin-top: 12%!important
 }
-.form-control{
-    border-radius: 180px;  
+.vue-simple-suggest.designed .input-wrapper input{
+    border-radius: 180px!important;  
     height: 48px;
-    padding-left: 60px;
-    padding-right: 30px
+    padding-left: 60px!important;
+    padding-right: 30px!important
+}
+.vue-simple-suggest.designed .suggestions{
+    border-radius:0px 0px 20px 20px!important;
+    height: 60px;
+}
+.vue-simple-suggest.designed .suggestions .suggest-item, .vue-simple-suggest.designed .suggestions .misc-item{
+   padding: 10px 30px 10px!important;
+   
+}
+.vue-simple-suggest.designed .suggestions .suggest-item.hover:hover{
+   background-color: rgba(0, 128, 0, 0.63)!important;
+   
 }
 .search-input{
     width:600px!important;

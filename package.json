@@ -17,6 +17,7 @@
     "vue": "^2.6.14",
     "vue-axios": "^3.4.1",
     "vue-router": "^3.5.4",
+    "vue-simple-suggest": "^1.11.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
